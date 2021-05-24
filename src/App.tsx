@@ -6,6 +6,7 @@ import {PageNotFounded} from "./pages/404page/404";
 import {NewPassword} from "./pages/enterNewPasssword/enterNewPasssword";
 import {RegistrationPage} from "./pages/register/register";
 import {RestorePasswordPage} from "./pages/restorePassword/restorePassword";
+import {TestStand} from "./pages/test/testPage";
 
 
 export const PATH = {
@@ -13,7 +14,8 @@ export const PATH = {
   PROFILE: '/profile',
   NEW_PASSWORD:'/new-pass',
   REGISTER:'/registration',
-  RESTORE_PASS:'/restore-pass'
+  RESTORE_PASS:'/restore-pass',
+  TEST_STAND:'/stand'
 }
 
 const App = () =>  {
@@ -25,6 +27,7 @@ const App = () =>  {
         <Route path={PATH.PROFILE} render={() => <NewPassword/>}/>
         <Route path={PATH.REGISTER} render={() => <RegistrationPage/>}/>
         <Route path={PATH.RESTORE_PASS} render={() => <RestorePasswordPage/>}/>
+        <Route path={PATH.TEST_STAND} render={() => <TestStand/>}/>
         <Route render={() => <PageNotFounded/>}/>
       </Switch>
     </div>

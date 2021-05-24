@@ -7,18 +7,22 @@ import SuperDoubleRange from "../../common/c8-SuperDoubleRange/SuperDoubleRange"
 import SuperEditableSpan from "../../common/c4-SuperEditableSpan/SuperEditableSpan";
 import SuperInputText from "../../common/c1-SuperInputText/SuperInputText";
 import SuperRange from "../../common/c7-SuperRange/SuperRange";
+import classes from './test.module.css'
 
 export const TestStand = () => {
     return (
-        <div>
-            <SuperRadio/>
-            <SuperSelect/>
-            <SuperButton/>
-            <SuperCheckbox/>
-            <SuperDoubleRange/>
-            <SuperEditableSpan/>
-            <SuperInputText/>
-            <SuperRange/>
+        <div className={classes.wrapper}>
+            <div>
+                <SuperRadio/>
+                <SuperSelect/>
+                <SuperButton/>
+                <SuperCheckbox/>
+                <SuperDoubleRange/>
+                <SuperEditableSpan/>
+                <SuperInputText/>
+                <SuperRange/>
+            </div>
+
         </div>
     )
 }

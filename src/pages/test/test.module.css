@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vH;
+}
+.wrapper div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}

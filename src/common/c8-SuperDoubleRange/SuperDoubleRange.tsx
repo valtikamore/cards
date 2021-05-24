@@ -1,23 +1,43 @@
-import React from "react";
+import { Slider } from "@material-ui/core";
+import React, {useState} from "react";
 
-type SuperDoubleRangePropsType = {
-    onChangeRange?: (value: [number, number]) => void
-    value?: [number, number]
-    // min, max, step, disable, ...
-}
 
-const SuperDoubleRange: React.FC<SuperDoubleRangePropsType> = (
-    {
-        onChangeRange, value,
-        // min, max, step, disable, ...
-    }
+
+
+
+
+
+const SuperDoubleRange: React.FC = (
+
 ) => {
-    // сделать самому, можно подключать библиотеки
+    const [value2, setValue2] = useState(0);
+    const [value3, setValue3] = useState(100);
+    function valuetext(value: number) {
+        return `${value}`;
+    }
+    const onChangeRange = (value: number | number[]) => {
+        if (Array.isArray(value)) {
+            setValue2(value[0])
+            setValue3(value[1])
+        }
+    }
+    const handleChange  = (event: React.ChangeEvent<{}>, value: (number | number[])) => {
+        onChangeRange && onChangeRange(value as number)
+    };
 
     return (
-        <>
+        <Slider
+            style={{
+                color:"grey",
+                width:150
+            }}
+            value={[value2,value3]}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            getAriaValueText={valuetext}>
             DoubleRange
-        </>
+        </Slider>
     );
 }
 
