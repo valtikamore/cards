@@ -1,27 +1,31 @@
 import React from 'react';
-import {Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import {LoginPage} from "./pages/login/login";
+import {ProfilePage} from "./pages/profile/profile";
+import {PageNotFounded} from "./pages/404page/404";
+import {NewPassword} from "./pages/enterNewPasssword/enterNewPasssword";
+import {RegistrationPage} from "./pages/register/register";
+import {RestorePasswordPage} from "./pages/restorePassword/restorePassword";
 
 
 export const PATH = {
   LOGIN: '/login',
   PROFILE: '/profile',
-  JUNIOR: '/junior',
-  JUNIOR_PLUS: '/juniorPlus',
-
+  NEW_PASSWORD:'/new-pass',
+  REGISTER:'/registration',
+  RESTORE_PASS:'/restore-pass'
 }
 
 const App = () =>  {
   return (
     <div >
       <Switch>
-        {/*в начале мы попадаем на страницу '/' и переходим сразу на страницу PRE_JUNIOR*/}
-        {/*exact нужен чтоб указать полное совподение (что после '/' ничего не будет)*/}
-        <Route path={'/'} exact render={() => }/>
-        <Route path={PATH.PRE_JUNIOR} render={() => <PreJunior/>}/>
-        <Route path={PATH.JUNIOR} render={() => <Junior/>}/>
-        <Route path={PATH.JUNIOR_PLUS} render={() => <JuniorPlus/>}/>
-        {/*у этого роута нет пути, он отрисуется если пользователь захочет попасть на несуществующую страницу*/}
-        <Route render={() => <Error404/>}/>
+        <Route path={PATH.LOGIN} render={() => <LoginPage/>}/>
+        <Route path={PATH.PROFILE} render={() => <ProfilePage/>}/>
+        <Route path={PATH.PROFILE} render={() => <NewPassword/>}/>
+        <Route path={PATH.REGISTER} render={() => <RegistrationPage/>}/>
+        <Route path={PATH.RESTORE_PASS} render={() => <RestorePasswordPage/>}/>
+        <Route render={() => <PageNotFounded/>}/>
       </Switch>
     </div>
   );
