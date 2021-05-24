@@ -1,24 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Redirect, Route, Switch } from 'react-router-dom';
 
-function App() {
+
+export const PATH = {
+  LOGIN: '/login',
+  PROFILE: '/profile',
+  JUNIOR: '/junior',
+  JUNIOR_PLUS: '/juniorPlus',
+
+}
+
+const App = () =>  {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <Switch>
+        {/*в начале мы попадаем на страницу '/' и переходим сразу на страницу PRE_JUNIOR*/}
+        {/*exact нужен чтоб указать полное совподение (что после '/' ничего не будет)*/}
+        <Route path={'/'} exact render={() => }/>
+        <Route path={PATH.PRE_JUNIOR} render={() => <PreJunior/>}/>
+        <Route path={PATH.JUNIOR} render={() => <Junior/>}/>
+        <Route path={PATH.JUNIOR_PLUS} render={() => <JuniorPlus/>}/>
+        {/*у этого роута нет пути, он отрисуется если пользователь захочет попасть на несуществующую страницу*/}
+        <Route render={() => <Error404/>}/>
+      </Switch>
     </div>
   );
 }
