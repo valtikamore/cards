@@ -2,11 +2,6 @@ import { Slider } from "@material-ui/core";
 import React, {useState} from "react";
 
 
-
-
-
-
-
 const SuperDoubleRange: React.FC = (
 
 ) => {
@@ -26,18 +21,23 @@ const SuperDoubleRange: React.FC = (
     };
 
     return (
-        <Slider
-            style={{
-                color:"grey",
-                width:150
-            }}
-            value={[value2,value3]}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            getAriaValueText={valuetext}>
-            DoubleRange
-        </Slider>
+        <>
+            <span>{value2}</span>
+            <Slider
+                style={{
+                    color:"grey",
+                    width:150
+                }}
+                value={[value2,value3]}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                aria-labelledby="range-slider"
+                getAriaValueText={valuetext}>
+                DoubleRange
+            </Slider>
+            <span>{value3}</span>
+        </>
+
     );
 }
 

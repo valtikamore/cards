@@ -1,9 +1,28 @@
+.input {
+    min-width: 200px;
+    padding: 15px;
+    border-radius: 30px;
+    outline: none;
+    border: none;
+    background-color: #E9EFF7;
+    margin: 5px;
+    color: #636b71;
+}
+.inputWrapper {
+    height: 150px;
+    width: 200px;
+}
+.inputWrapper div {
+    text-align: center;
+}
+
 .superInput {
-    border: 1px solid #11f011;
+
 }
 
 .errorInput {
-    border: 1px solid #ff0000;
+    background: #d7a8a8;
+    border: none;
 }
 
 .error {

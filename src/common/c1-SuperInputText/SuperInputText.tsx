@@ -1,7 +1,6 @@
-import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent} from 'react'
+import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent, useState} from 'react'
 import s from './SuperInputText.module.css'
 
-// тип пропсов обычного инпута
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 // здесь мы говорим что у нашего инпута будут такие же пропсы как у обычного инпута
@@ -18,40 +17,53 @@ const SuperInputText: React.FC<SuperInputTextPropsType> = (
         type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
         onChange, onChangeText,
         onKeyPress, onEnter,
-        error,
         className, spanClassName,
 
         ...restProps// все остальные пропсы попадут в объект restProps
     }
 ) => {
+
+    const [error, setError] = useState(false);
+    const [text, setText] = useState('');
+
     const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
         onChange // если есть пропс onChange
         && onChange(e) // то передать ему е (поскольку onChange не обязателен)
+        if (text) {
+            setError(false)
+        }
+        setText(e.currentTarget.value)
 
-        onChangeText && onChangeText(e.currentTarget.value)
     }
     const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
         onKeyPress && onKeyPress(e);
-
-        onEnter // если есть пропс onEnter
-        && e.key === 'Enter' // и если нажата кнопка Enter
-        && onEnter() // то вызвать его
+        e.key === 'Enter' // и если нажата кнопка Enter
+        && alert(text)
+    }
+    const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
+        if(text === '') {
+            setError(true)
+        }
     }
 
     const finalSpanClassName = `${s.error} ${spanClassName ? spanClassName : ''}`
-    const finalInputClassName = `${s.errorInput} ${s.errorInput ? s.errorInput : s.superInput}` // need to fix with (?:) and s.superInput
+    const finalInputClassName = `${s.input} ${error ? s.errorInput : ''}`
 
     return (
         <>
-            <input
-                type={'text'}
-                onChange={onChangeCallback}
-                onKeyPress={onKeyPressCallback}
-                className={finalInputClassName}
+            <div className={s.inputWrapper}>
+                <input
+                    type={'text'}
+                    onChange={onChangeCallback}
+                    onKeyPress={onKeyPressCallback}
+                    className={finalInputClassName}
+                    value={text}
+                    onBlur={onBlur}
+                    {...restProps} // отдаём инпуту остальные пропсы если они есть (value например там внутри)
+                />
+                {error && <div className={finalSpanClassName}>This field is compulsory</div>}
+            </div>
 
-                {...restProps} // отдаём инпуту остальные пропсы если они есть (value например там внутри)
-            />
-            {error && <span className={finalSpanClassName}>{error}</span>}
         </>
     )
 }

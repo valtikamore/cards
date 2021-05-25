@@ -1,7 +1,18 @@
 .checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: red;
+}
+.checkbox:checked {
+    appearance: none;
 
+    background: greenyellow;
+}
+.checkbox:focus {
+    outline: lightgreen solid 1px ;
 }
 
 .spanClassName {
-
+    color: darkgreen;
 }

@@ -15,16 +15,19 @@ export const PATH = {
   NEW_PASSWORD:'/new-pass',
   REGISTER:'/registration',
   RESTORE_PASS:'/restore-pass',
-  TEST_STAND:'/stand'
+  TEST_STAND:'/stand',
+  DEFAULT:'/',
+  ALL:'*',
 }
 
 const App = () =>  {
   return (
     <div >
       <Switch>
+        <Route exact path={PATH.DEFAULT} render={() => <LoginPage/>}/>
         <Route path={PATH.LOGIN} render={() => <LoginPage/>}/>
         <Route path={PATH.PROFILE} render={() => <ProfilePage/>}/>
-        <Route path={PATH.PROFILE} render={() => <NewPassword/>}/>
+        <Route path={PATH.NEW_PASSWORD} render={() => <NewPassword/>}/>
         <Route path={PATH.REGISTER} render={() => <RegistrationPage/>}/>
         <Route path={PATH.RESTORE_PASS} render={() => <RestorePasswordPage/>}/>
         <Route path={PATH.TEST_STAND} render={() => <TestStand/>}/>

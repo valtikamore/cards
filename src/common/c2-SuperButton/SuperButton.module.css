@@ -1,11 +1,33 @@
 .default {
-
+    box-shadow: 3px 4px 0 0 #899599;
+    background:linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
+    background-color:#ededed;
+    border-radius:15px;
+    border:1px solid #d6bcd6;
+    display:inline-block;
+    cursor:pointer;
+    color:#3a8a9e;
+    font-size:17px;
+    padding:7px 25px;
+    text-decoration:none;
+    text-shadow:0 1px 0 #e1e2ed;
 }
+.default:hover {
+    background:linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
+    background-color:#bab1ba;
+}
+.default:active {
+    position:relative;
+    top:1px;
+}
+
 .default:disabled {
     background-color: #888888;
     color: rgba(12, 12, 12, 0.6);
 }
 
 .red {
+    color: black;
     background: red;
 }
+
