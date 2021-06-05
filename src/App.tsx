@@ -1,40 +1,51 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import {LoginPage} from "./pages/login/login";
-import {ProfilePage} from "./pages/profile/profile";
-import {PageNotFounded} from "./pages/404page/404";
-import {NewPassword} from "./pages/enterNewPasssword/enterNewPasssword";
-import {RegistrationPage} from "./pages/register/register";
-import {RestorePasswordPage} from "./pages/restorePassword/restorePassword";
-import {TestStand} from "./pages/test/testPage";
+import React, {useEffect, useState} from 'react';
+import Header from './components/Header/Header';
+import {Redirect, Route, Switch} from "react-router-dom";
+import Profile from "./components/Main/Profile/Profile";
+import {PageNotFounded} from "./components/Main/PageNotFounded/PageNotFounded";
+import Auth from './components/Main/Auth/Auth';
+import {useDispatch, useSelector} from "react-redux";
+import {authMeTC} from "./redux/authReducer/authReducer";
+import {AppStateType} from "./redux/store";
+import {serverUserType} from "./api/cards-api";
+import preloader from './assets/icons/preloader.svg'
 
-
-export const PATH = {
-  LOGIN: '/login',
-  PROFILE: '/profile',
-  NEW_PASSWORD:'/new-pass',
-  REGISTER:'/registration',
-  RESTORE_PASS:'/restore-pass',
-  TEST_STAND:'/stand',
-  DEFAULT:'/',
-  ALL:'*',
+const PATH = {
+    AUTH: '/auth',
+    LOGIN: 'auth/login',
+    PROFILE: '/profile',
 }
 
-const App = () =>  {
-  return (
-    <div >
-      <Switch>
-        <Route exact path={PATH.DEFAULT} render={() => <LoginPage/>}/>
-        <Route path={PATH.LOGIN} render={() => <LoginPage/>}/>
-        <Route path={PATH.PROFILE} render={() => <ProfilePage/>}/>
-        <Route path={PATH.NEW_PASSWORD} render={() => <NewPassword/>}/>
-        <Route path={PATH.REGISTER} render={() => <RegistrationPage/>}/>
-        <Route path={PATH.RESTORE_PASS} render={() => <RestorePasswordPage/>}/>
-        <Route path={PATH.TEST_STAND} render={() => <TestStand/>}/>
-        <Route render={() => <PageNotFounded/>}/>
-      </Switch>
-    </div>
-  );
+
+const App = (props: any) => {
+    const dispatch: Function = useDispatch()
+    const isLoggedIn = useSelector<AppStateType, boolean>(state => state.authReducer.isLoggedIn);
+    const loading = useSelector<AppStateType, boolean>(state => state.authReducer.loading);
+    const user = useSelector<AppStateType, serverUserType | null>(state => state.authReducer.user);
+
+    useEffect(() => {
+        if (user === null) {
+            dispatch(authMeTC())
+        }
+    }, [])
+
+
+    if (loading) {
+        return (<div><img src={preloader} alt=""/></div>)
+    }
+
+
+    return (
+        <div>
+            <Header/>
+            <Switch>
+                <Route path={'/'} exact render={() => <Redirect to={PATH.LOGIN}/>}/>
+                <Route path={PATH.AUTH} render={() => <Auth/>}/>
+                <Route path={PATH.PROFILE} render={() => <Profile/>}/>
+                <Route render={() => <PageNotFounded/>}/>
+            </Switch>
+        </div>
+    );
 }
 
 export default App;
