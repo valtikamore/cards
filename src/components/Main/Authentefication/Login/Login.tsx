@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginTC} from '../../../redux/authReducer/authReducer';
+import {loginTC} from '../../../../redux/authReducer/authReducer';
 import {NavLink} from 'react-router-dom';
 import {
     FormControl,
@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import {Visibility, VisibilityOff} from '@material-ui/icons';
 import {useFormik} from 'formik';
-import {AppStateType} from '../../../redux/store';
+import {AppStateType} from '../../../../redux/store';
 
 type PropsType = {
     styles: any

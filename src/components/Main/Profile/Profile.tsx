@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { serverUserType } from '../../../api/cards-api';
 import {AppStateType} from '../../../redux/store';
-import {authMeTC} from "../../../redux/authReducer/authReducer";
 
 const Profile = (props: any) => {
     const dispatch = useDispatch();
@@ -23,10 +22,9 @@ const Profile = (props: any) => {
         <div>
             <ul>
                 <li> <span>{user !== null ? user.email : 'eeeee'}</span></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li> <span>{user !== null ? user.name : 'eeeee'}</span></li>
+                <li> <span>{user !== null ? user._id : 'eeeee'}</span></li>
+                <li> <span>{user !== null ? user.created : 'eeeee'}</span></li>
             </ul>
         </div>
 

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import styles from "./Restore.module.scss";
-import { RestoreMailTC} from "../../../redux/restorePassReducer/restorePassReducer";
+import { RestoreMailTC} from "../../../../redux/changePassword/restorePassReducer/restorePassReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../../../redux/store";
+import {AppStateType} from "../../../../redux/store";
 import {CheckEmail} from "../Registration/CheckEmail";
 
 type PropsType = {

@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import styles from '../Auth/Auth.module.scss';
+import styles from './Auth.module.scss';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import Login from '../Login/Login';
 import Registration from '../Registration/Registration';
 import RestorePass from '../RestorePass/RestorePass';
 import ChangePass from '../ChangePass/ChangePass';
 import {useSelector} from "react-redux";
-import { AppStateType } from '../../../redux/store';
+import { AppStateType } from '../../../../redux/store';
 
 
 export const Auth: React.FC = (props) => {

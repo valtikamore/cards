@@ -1,5 +1,5 @@
 import React from 'react'
-import emailCircleIcon from '../../../assets/img/svg/mail-circle-icon.svg';
+import emailCircleIcon from '../../../../assets/img/svg/mail-circle-icon.svg';
 
 type PropsType = {
     styles: any

@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useCallback, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {RegistrationTC} from '../../../redux/registrationReducer/registrationReducer';
+import {RegistrationTC} from '../../../../redux/registrationReducer/registrationReducer';
 import {Redirect, useHistory} from 'react-router-dom';
-import {AppStateType} from "../../../redux/store";
-import preloader from '../../../assets/icons/preloader.svg'
+import {AppStateType} from "../../../../redux/store";
+import preloader from '../../../../assets/icons/preloader.svg'
 import classNames from "classnames";
 import {Button, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel} from '@material-ui/core';
 import {useFormik} from 'formik';

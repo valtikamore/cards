@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import styles from './ChangePass.module.scss'
 import {Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import { RestorePassTC } from '../../../redux/changePassReducer/changePassReducer';
-import {AppStateType} from "../../../redux/store";
+import { RestorePassTC } from '../../../../redux/changePassword/changePassReducer/changePassReducer';
+import {AppStateType} from "../../../../redux/store";
 
 const ChangePass = (props: any) => {
     const [pass, setPass] = useState('');

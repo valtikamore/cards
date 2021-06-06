@@ -3,17 +3,22 @@ import Header from './components/Header/Header';
 import {Redirect, Route, Switch} from "react-router-dom";
 import Profile from "./components/Main/Profile/Profile";
 import {PageNotFounded} from "./components/Main/PageNotFounded/PageNotFounded";
-import Auth from './components/Main/Auth/Auth';
+import Auth from './components/Main/Authentefication/Auth/Auth';
 import {useDispatch, useSelector} from "react-redux";
 import {authMeTC} from "./redux/authReducer/authReducer";
 import {AppStateType} from "./redux/store";
 import {serverUserType} from "./api/cards-api";
 import preloader from './assets/icons/preloader.svg'
+import { Packs } from './components/Main/Packs/Packs';
+import {Cards} from "./components/Main/1_Cards/Cards";
+
 
 const PATH = {
     AUTH: '/auth',
     LOGIN: 'auth/login',
     PROFILE: '/profile',
+    PACKS: '/packs',
+    CARDS: '/cards',
 }
 
 
@@ -42,6 +47,8 @@ const App = (props: any) => {
                 <Route path={'/'} exact render={() => <Redirect to={PATH.LOGIN}/>}/>
                 <Route path={PATH.AUTH} render={() => <Auth/>}/>
                 <Route path={PATH.PROFILE} render={() => <Profile/>}/>
+                <Route path={PATH.PACKS} render={() => <Packs/>}/>
+                <Route path={PATH.CARDS} render={() => <Cards/>}/>
                 <Route render={() => <PageNotFounded/>}/>
             </Switch>
         </div>
