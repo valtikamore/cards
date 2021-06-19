@@ -88,9 +88,9 @@ const actions = {
     }
 }
 
-export const RestoreMailTC = (email: string, from: string, message: string) => (dispatch: any) => {
+export const RestoreMailTC = (email: string) => (dispatch: any) => {
     dispatch(actions.restoreEmailLoadingAC(true))
-    authAPI.restorePassword(email, from, message)
+    authAPI.restorePassword(email)
         .then(data => {
             console.log(data.info)
             dispatch(actions.restoreEmailSuccessAC(true))

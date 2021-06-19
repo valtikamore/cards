@@ -11,13 +11,11 @@ const Navigation = (props: any) => {
     const dispatch = useDispatch();
 
     let [tempState, setTempState] = useState( [
-
         {name: 'Login', path: 'auth/login'},
         {name: 'Registration', path: 'auth/registration'},
         {name: 'Restore Password', path: 'auth/restore-password'},
         {name: 'Change Password', path: 'auth/change-password'},
         {name: 'Packs', path: 'packs'},
-        {name: 'Cards', path: 'cards'},
         {name: 'Profile', path: 'profile'}]);
 
     let navLinks = tempState.map((link:{name: string, path:string}, index:number) => {

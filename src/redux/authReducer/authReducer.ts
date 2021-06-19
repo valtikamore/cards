@@ -15,7 +15,6 @@ type InitialStateType = {
     isLoggedIn: boolean
     loading: boolean
     error: string
-    info: string
 }
 
 export const initialState: InitialStateType = {
@@ -23,7 +22,6 @@ export const initialState: InitialStateType = {
     isLoggedIn: false,
     loading: false,
     error: '',
-    info: ''
 }
 
 type PropertiesType<ActionType> = ActionType extends { [key: string]: infer ResponseType } ? ResponseType : never;
@@ -53,12 +51,6 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
             return ({
                 ...state,
                 error: action.payload.error
-            })
-        }
-        case INFO: {
-            return ({
-                ...state,
-                info: action.payload.info
             })
         }
 
@@ -101,14 +93,6 @@ export const authActions = {
             } as InitialStateType,
         })
     },
-    infoAC: (info: string) => {
-        return ({
-            type: INFO,
-            payload: {
-                info
-            } as InitialStateType,
-        })
-    }
 }
 
 
@@ -132,7 +116,6 @@ export const LogoutTC = () => (dispatch: any) => {
     authAPI.logOut()
         .then((data) => {
             dispatch(authActions.loginFlowAC(false))
-            dispatch(authActions.infoAC(data.info))
         })
         .catch((error) => {
             dispatch(authActions.errorAC(error.error))

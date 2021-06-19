@@ -18,15 +18,16 @@ const PATH = {
     LOGIN: 'auth/login',
     PROFILE: '/profile',
     PACKS: '/packs',
-    CARDS: '/cards',
+    CARDS: '/cards/:id/:name',
 }
 
 
 const App = (props: any) => {
     const dispatch: Function = useDispatch()
-    const isLoggedIn = useSelector<AppStateType, boolean>(state => state.authReducer.isLoggedIn);
-    const loading = useSelector<AppStateType, boolean>(state => state.authReducer.loading);
+    const isInitialized = useSelector<AppStateType, boolean>(state => state.appReducer.isInitialized);
     const user = useSelector<AppStateType, serverUserType | null>(state => state.authReducer.user);
+    const isLoggedIn = useSelector<AppStateType, boolean>(state => state.authReducer.isLoggedIn);
+
 
     useEffect(() => {
         if (user === null) {
@@ -35,16 +36,22 @@ const App = (props: any) => {
     }, [])
 
 
-    if (loading) {
-        return (<div><img src={preloader} alt=""/></div>)
+    if (isInitialized) {
+        return (<div className={'initializePreloader'}>
+            <img src={preloader} alt={'initialize preloader'}/>
+        </div>)
     }
-
 
     return (
         <div>
             <Header/>
             <Switch>
-                <Route path={'/'} exact render={() => <Redirect to={PATH.LOGIN}/>}/>
+                <Route path={'/'} exact render={() => {
+                    if (user !== null && isLoggedIn) {
+                        return (<Redirect to={PATH.PROFILE}/>);
+                    }
+                    return (<Redirect to={PATH.LOGIN}/>)
+                }}/>
                 <Route path={PATH.AUTH} render={() => <Auth/>}/>
                 <Route path={PATH.PROFILE} render={() => <Profile/>}/>
                 <Route path={PATH.PACKS} render={() => <Packs/>}/>

@@ -1,5 +1,5 @@
-@import '../../../../styles/mixins.module';
-@import '../../../../styles/variables.module';
+@import '../../../styles/mixins.module';
+@import '../../../styles/variables.module';
 
 .container {
   @include gridContainer (100.8rem, transparent);
@@ -14,25 +14,25 @@
     line-height: 1;
     overflow: hidden;
     .inner {
-      @include gridBox(5 / span 6, $bgcolor);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: stretch;
-      h1, h2 {
-        text-align: center;
-      }
-      h1 {
-        line-height: 1;
-        padding: 0 3.2rem;
-      }
-      h3 {
-        text-align: left;
-        padding-bottom: 3.8rem;
-      }
-      .textInput {
-        @include textInputs()
-      }
+        @include gridBox(5 / span 6, $bgcolor);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        h1, h2 {
+          text-align: center;
+        }
+        h1 {
+          line-height: 1;
+          padding: 0 3.2rem;
+        }
+        h3 {
+          text-align: left;
+          padding-bottom: 3.8rem;
+        }
+        .textInput {
+          @include textInputs()
+        }
       .btn_group{
 
         display: flex;
@@ -41,6 +41,7 @@
         margin-top: 9.3rem;
         .btn {
           cursor: pointer;
+          position: relative;
           display: block;
           margin: 0 2.4rem;
           border: none;
@@ -51,12 +52,22 @@
           color: rgb(255, 255, 255);
           background-color: $third;
           box-shadow: $btnBoxShadow;
+        .preloader {
+          height: 55px;
+          width: 55px;
+          position: absolute;
+          top: -22%;
+          left: 15%;
+        }
+        }
+        .disable {
+          background-color: #dddddd;
         }
         .btnSecond {
-          @extend .btn;
+         @extend .btn;
           background-color: $btnActiveColor;
         }
       }
-    }
+      }
   }
 }
