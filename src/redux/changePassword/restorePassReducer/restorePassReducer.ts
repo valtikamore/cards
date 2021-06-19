@@ -1,4 +1,4 @@
-import {authAPI} from "../../../api/cards-api";
+import { authAPI } from "../../../api/auth-api";
 
 const RESTORE = 'restoreReducer/RESTORE' as const;
 const ERROR = 'restoreReducer/ERROR' as const;

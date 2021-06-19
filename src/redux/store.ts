@@ -16,16 +16,11 @@ export const rootReducer = combineReducers({
     restorePassReducer,
     changePassReducer,
     appReducer,
-    cardsReducer: packsReducer
+    packsReducer
 });
 
 export type AppStateType = ReturnType<typeof rootReducer>
 
-// export const store = createStore(rootReducer, applyMiddleware(thunk));
-
-
-
 export const store = createStore(rootReducer, composeWithDevTools(
     applyMiddleware(thunk),
-    // other store enhancers if any
 ));

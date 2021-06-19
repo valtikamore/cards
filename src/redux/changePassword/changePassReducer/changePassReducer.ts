@@ -1,4 +1,4 @@
-import {authAPI} from "../../../api/cards-api";
+import { authAPI } from "../../../api/auth-api";
 
 export const CHANGE_PASS: string = 'changePassreducer/CHANGE_PASS';
 

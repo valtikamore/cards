@@ -1,9 +1,8 @@
-import {authAPI, serverUserType} from '../../api/cards-api';
-import {appActions} from "../appReducer/appReducer";
 import {Dispatch} from "redux";
+import {authAPI} from "../../api/auth-api";
+import {profileActions} from "../profileReducer/profileReducer";
 
 
-export const SET_USER_DATA = 'authReducer/SET_USER_DATA' as const;
 export const LOGIN_FLOW = 'authReducer/SET-LOGIN' as const;
 export const LOADING = 'authReducer/SET-LOADING' as const;
 export const ERROR = 'authReducer/SET-ERROR' as const;
@@ -11,14 +10,12 @@ export const INFO = 'authReducer/SET-INFO' as const;
 
 
 type InitialStateType = {
-    user: null | serverUserType
     isLoggedIn: boolean
     loading: boolean
     error: string
 }
 
 export const initialState: InitialStateType = {
-    user: null as serverUserType | null,
     isLoggedIn: false,
     loading: false,
     error: '',
@@ -29,12 +26,6 @@ type ActionsType = ReturnType<PropertiesType<typeof authActions>>
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case SET_USER_DATA: {
-            return ({
-                ...state,
-                user: {...action.payload.data},
-            })
-        }
         case LOGIN_FLOW: {
             return ({
                 ...state,
@@ -60,15 +51,6 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
 }
 
 export const authActions = {
-    setUserDataAC: (data: serverUserType) => {
-        return ({
-            type: SET_USER_DATA,
-            payload: {
-                data
-            },
-        })
-
-    },
     loginFlowAC: (isLoggedIn: boolean) => {
         return ({
             type: LOGIN_FLOW,
@@ -100,7 +82,7 @@ export const loginTC = (email: string, password: string, rememberMe?: boolean) =
     dispatch(authActions.loadingAC(true))
     authAPI.logIn(email, password, rememberMe = true)
         .then(data => {
-            dispatch(authActions.setUserDataAC(data))
+            dispatch(profileActions.setProfileDataAC(data))
             dispatch(authActions.loginFlowAC(true))
         })
         .catch((error) => {
@@ -130,7 +112,7 @@ export const authMeTC = () => (dispatch: Dispatch) => {
     dispatch(authActions.loadingAC(true))
     authAPI.me()
         .then(data => {
-            dispatch(authActions.setUserDataAC(data))
+            dispatch(profileActions.setProfileDataAC(data))
             dispatch(authActions.loginFlowAC(true))
         })
         .catch(err => {

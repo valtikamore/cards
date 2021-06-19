@@ -1,4 +1,4 @@
-import {authAPI} from "../../api/cards-api";
+import {authAPI} from "../../api/auth-api";
 
 export const SUCCESS = 'registrationReducer/SUCCESS' as const
 export const LOADING = 'registrationReducer/LOADING'as const
@@ -17,24 +17,11 @@ type addedUserType = {
         _id: string
 }
 type InitialStateType = {
-    // addedUser:addedUserType
     loading:boolean
     error:string
     registrationSuccess: boolean
 }
 const initialState = {
-    // addedUser:{
-    //     created: '',
-    //     email: '',
-    //     isAdmin: false,
-    //     name: '',
-    //     publicCardPacksCount: 0,
-    //     rememberMe: false,
-    //     updated: '',
-    //     verified: false,
-    //     __v: 0,
-    //     _id: '',
-    // },
     registrationSuccess:false,
     loading:false,
     error:''

@@ -1,132 +1,241 @@
 import {Dispatch} from "redux";
-import {packType, packAPI} from "../../api/cards-api";
 import {appActions} from "../appReducer/appReducer";
+import {AppStateType} from "../store";
+import {createSelector} from "reselect";
+import { batch } from "react-redux";
+import {authActions} from "../authReducer/authReducer";
+import {packsAPI, PacksParamsType, packType} from "../../api/packs-api";
 
 
-export const GET_PACKS = 'packsReducer/GET_PACKS' as const;
-export const GET_USER_PACKS = 'packsReducer/GET_USER_PACKS' as const;
+export const SET_PACKS = 'packsReducer/SET-PACKS' as const;
+export const SET_PAGE_COUNT = 'packsReducer/SET-PAGE-COUNT' as const;
+export const SET_PAGE_NUMBER = 'packsReducer/SET-PAGE-NUMBER' as const;
+export const SET_RANGE_SIZE_PACKS = 'packsReducer/SET-RANGE-SIZE-PACKS' as const;
+export const SET_PACKS_TOTAL_COUNT = 'packsReducer/SET-PACKS-TOTAL-COUNT' as const;
+export const SET_SORT_PACKS = 'packsReducer/SET-SORT-PACKS-ORDER' as const;
+export const SET_ONLY_MY_MODE = 'packsReducer/SET-ONLY-MY-MODE' as const;
 
 
 
 
 type InitialStateType = {
     cardPacks:packType[]
-    cardPacksTotalCount: number // количество колод
-    maxCardsCount: number
-    minCardsCount: number
-    page: number // выбранная страница
-    pageCount: number // количество элементов на странице
+    packsParams: PacksParamsType
+    cardPacksTotalCount: number
+    pageCounts: number[]
+    onlyMy: boolean
 }
 
 export const initialState: InitialStateType = {
-    cardPacks: [] as packType[] ,
+    cardPacks: [] as packType[],
+    packsParams: {
+        min: 0,
+        max: 20,
+        page: 1,
+        pageCount: 10,
+        sortPacks: '0updated',
+    },
     cardPacksTotalCount: 0,
-    maxCardsCount: 20,
-    minCardsCount: 10,
-    page: 1 ,
-    pageCount: 0 ,
+    pageCounts: [10, 20, 30, 50, 100],
+    onlyMy: false
 }
+
 
 type PropertiesType<ActionType> = ActionType extends { [key: string]: infer ResponseType } ? ResponseType : never;
 type ActionsType = ReturnType<PropertiesType<typeof packsActions>>
 
 export const packsReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case GET_PACKS:{
+        case SET_PACKS:{
             return ({
                 ...state,
-                cardPacks:action.payload.cards
+                cardPacks: action.payload.packs
             })
         }
-        // case GET_USER_PACKS:{
-        //     return ({
-        //         ...state,
-        //         cardPacks:action.payload.cards
-        //     })
-        // }
+        case SET_RANGE_SIZE_PACKS: {
+            return ({
+                ...state,
+                packsParams: {...state.packsParams, ...action.payload}
+            })
+        }
+        case SET_PAGE_COUNT: {
+            return ({
+                ...state,
+                packsParams: {...state.packsParams, pageCount: action.payload.pageCount}
+            })
+        }
+        case SET_PAGE_NUMBER: {
+            return ({
+                ...state,
+                packsParams: {...state.packsParams, page: action.payload.page}
+            })
+        }
+        case SET_PACKS_TOTAL_COUNT: {
+            return ({
+                ...state,
+                cardPacksTotalCount: action.payload.cardPacksTotalCount
+            })
+        }
+        case SET_SORT_PACKS: {
+            return ({
+                ...state,
+                packsParams: {...state.packsParams, sortPacks: action.payload.sortPacks}
+            })
+        }
+        case SET_ONLY_MY_MODE : {
+            return ({
+                ...state,
+                onlyMy: action.payload.onlyMy
+            })
+        }
         default:
             return state
     }
 }
 
 export const packsActions = {
-    getPacksAC (cards:packType[])  {
+    setPacks(packs: packType[]) {
         return ({
-            type:GET_PACKS,
-            payload : {
-                cards
+            type: SET_PACKS,
+            payload: {
+                packs
             }
         })
     },
-    getUserPacksAC (userId:string)  {
+    setPageCountAC(pageCount: number) {
         return ({
-            type:GET_USER_PACKS,
-            payload : {
-                userId
+            type: SET_PAGE_COUNT,
+            payload: {
+                pageCount
+            }
+        })
+    },
+    setPageAC(page: number) {
+        return ({
+            type: SET_PAGE_NUMBER,
+            payload: {
+                page
+            }
+        })
+    },
+
+    setRangeSizePacks (rangeSize: number[]) {
+        return ({
+            type: SET_RANGE_SIZE_PACKS,
+            payload: {
+                min: rangeSize[0],
+                max: rangeSize[1]
+            }
+        })
+    },
+    setTotalPacksCountAC(cardPacksTotalCount: number) {
+        return ({
+            type: SET_PACKS_TOTAL_COUNT,
+            payload: {
+                cardPacksTotalCount
+            }
+        })
+    },
+    setSortPacksAC(order: number, sortBy: string) {
+        return ({
+            type: SET_SORT_PACKS,
+            payload: {
+                sortPacks: `${order}${sortBy}`
+            }
+        })
+    },
+    setOnlyMyMode(onlyMy: boolean) {
+        return ({
+            type: SET_ONLY_MY_MODE,
+            payload: {
+                onlyMy
             }
         })
     },
 }
-export const requestCardsTC = () => async (dispatch: Dispatch) => {
-    dispatch(appActions.setAppStatusAC('loading'))
-    let res = await packAPI.getPacks()
+//Reselect
+
+const params = (state: AppStateType) => state.packsReducer.packsParams;
+const onlyMyMode = (state: AppStateType) => state.packsReducer.onlyMy;
+const profileId = (state: AppStateType) => state.profileReducer.profile?._id;
+
+const getReqParams = createSelector(params, onlyMyMode, profileId, (params, onlyMy, id) => {
+    return onlyMy && id ? {...params, user_id: id} : params;
+})
+
+export const requestPacksTC = () => async (dispatch: Dispatch, getState: () => AppStateType) => {
+    dispatch(appActions.setAppStatusAC('loading'));
+    //названия параметров в стейте должно соответствовать параметрам get запроса
     try {
-        dispatch(packsActions.getPacksAC(res.cardPacks))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        const res = await packsAPI.getPacks(getReqParams(getState()))
+        batch(()=>{
+            dispatch(packsActions.setPacks(res.cardPacks))
+            dispatch(packsActions.setTotalPacksCountAC(res.cardPacksTotalCount))
+            dispatch(appActions.setAppStatusAC('succeeded'))
+        })
+
     }
     catch (err) {
-        dispatch(appActions.setAppErrorAC('error'))
-        dispatch(appActions.setAppStatusAC('failed'))
+        batch(()=>{
+            dispatch(appActions.setAppErrorAC('error'))
+            dispatch(appActions.setAppStatusAC('failed'))
+            dispatch(authActions.loginFlowAC(false))
+        })
     }
 }
-export const requestUserCardsTC = (user_id:string) => async (dispatch: Dispatch) => {
+export const createPackTC = () => async (dispatch: Dispatch, getState: () => AppStateType) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    let res = await packAPI.getUserPacks(1000,4,user_id)
+
     try {
-        dispatch(packsActions.getPacksAC(res.cardPacks))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        await packsAPI.createPack()
+        let res1 = await packsAPI.getPacks(getReqParams(getState()))
+        batch(()=>{
+            dispatch(packsActions.setPacks(res1.cardPacks))
+            dispatch(appActions.setAppStatusAC('succeeded'))
+        })
     }
     catch (err) {
-        dispatch(appActions.setAppErrorAC('error'))
-        dispatch(appActions.setAppStatusAC('failed'))
+        batch(()=>{
+            dispatch(appActions.setAppErrorAC('error'))
+            dispatch(appActions.setAppStatusAC('failed'))
+        })
+
     }
 }
-export const createPackTC = () => async (dispatch: Dispatch) => {
+export const deletePackTC = (packId:string) => async (dispatch: Dispatch, getState: () => AppStateType) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    let res = await packAPI.createPack()
-    let res1 = await packAPI.getPacks()
+
     try {
-        dispatch(packsActions.getPacksAC(res1.cardPacks))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        await packsAPI.deletePack(packId)
+        let res1 = await packsAPI.getPacks(getReqParams(getState()))
+        batch(() => {
+            dispatch(packsActions.setPacks(res1.cardPacks))
+            dispatch(appActions.setAppStatusAC('succeeded'))
+        })
     }
     catch (err) {
-        dispatch(appActions.setAppErrorAC('error'))
-        dispatch(appActions.setAppStatusAC('failed'))
+        batch(() => {
+            dispatch(appActions.setAppErrorAC('error'))
+            dispatch(appActions.setAppStatusAC('failed'))
+        })
     }
 }
-export const deletePackTC = (packId:string) => async (dispatch: Dispatch) => {
+
+export const updatePackTC = (packId:string, name:string) => async (dispatch: Dispatch, getState: () => AppStateType) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    let res = await packAPI.deletePack(packId)
-    let res1 = await packAPI.getPacks()
     try {
-        dispatch(packsActions.getPacksAC(res1.cardPacks))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        await packsAPI.updatePack(packId, name)
+        let res1 = await packsAPI.getPacks(getReqParams(getState()))
+        batch(()=> {
+            dispatch(packsActions.setPacks(res1.cardPacks))
+            dispatch(appActions.setAppStatusAC('succeeded'))
+        })
+
     }
     catch (err) {
-        dispatch(appActions.setAppErrorAC('error'))
-        dispatch(appActions.setAppStatusAC('failed'))
-    }
-}
-export const updatePackTC = (packId:string,name:string) => async (dispatch: Dispatch) => {
-    dispatch(appActions.setAppStatusAC('loading'))
-    let res = await packAPI.updatePack(packId,name)
-    let res1 = await packAPI.getPacks()
-    try {
-        dispatch(packsActions.getPacksAC(res1.cardPacks))
-        dispatch(appActions.setAppStatusAC('succeeded'))
-    }
-    catch (err) {
-        dispatch(appActions.setAppErrorAC('error'))
-        dispatch(appActions.setAppStatusAC('failed'))
+        batch(()=>{
+            dispatch(appActions.setAppErrorAC('error'))
+            dispatch(appActions.setAppStatusAC('failed'))
+        })
     }
 }
